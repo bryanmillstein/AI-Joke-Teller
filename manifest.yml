@@ -1,0 +1,22 @@
+---
+declared-services:
+  text-to-speech-service:
+    label: text_to_speech
+    plan: standard
+  dialog-service:
+    label: dialog
+    plan: standard
+  speech-to-text-service-standard:
+    label: speech_to_text
+    plan: standard
+applications:
+- services:
+  - text-to-speech-service
+  - dialog-service
+  - speech-to-text-service-standard
+  name: bryans-text-to-speech-demo
+  path: .
+  memory: 768M
+  env:
+    NODE_ENV: production
+    SECURE_EXPRESS: 1
