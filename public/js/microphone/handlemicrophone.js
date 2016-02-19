@@ -78,7 +78,7 @@ exports.handleMicrophone = function(token, model, mic, callback) {
       // apply mappings to beautify
       text = text.replace(/%HESITATION\s/g, '');
       text = text.replace(/(.)\1{2,}/g, '');
-      if (msg.results[0].final)
+      if (msg.results[0].final) {
         console.log('msg.results')
         console.log('-> ' + text);
         console.log('msg.results')
@@ -124,6 +124,7 @@ exports.handleMicrophone = function(token, model, mic, callback) {
 
         synthesizeRequest(utteranceOptions, audio);
         typeText(spokenText);
+      }
     }
   }
 

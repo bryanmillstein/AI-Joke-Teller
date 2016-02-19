@@ -21,51 +21,49 @@ var handleMicrophone = require('./handlemicrophone').handleMicrophone;
 
 exports.initRecordButton = function(ctx) {
 
-  var recordButton = $('#recordButton');
+  var recordButton = $('#recordButton'),
+      timeoutId = 0,
+      running = false,
+      mic;
 
-  recordButton.click((function() {
+  recordButton.mouseup(function () {
+    if (!running) {
+      return
+    }
+    recordButton.removeAttr('style');
+    recordButton.find('img').attr('src', 'images/microphone.svg');
+    setTimeout(function () {
+      console.log('Stopping microphone, sending stop action message');
 
-    var running = false;
+      $.publish('hardsocketstop');
+      mic.stop();
+      running = false
+    }, 2000)
+  });
+
+  recordButton.mousedown(function() {
+    running = true;
     var token = ctx.token;
     var micOptions = {
       bufferSize: ctx.buffersize
     };
-    var mic = new Microphone(micOptions);
+    mic = new Microphone(micOptions);
 
     return function(evt) {
-      // Prevent default anchor behavior
-      evt.preventDefault();
+      var currentModel = localStorage.getItem('currentModel'),
+          currentlyDisplaying = localStorage.getItem('currentlyDisplaying');
 
-      var currentModel = localStorage.getItem('currentModel');
-      var currentlyDisplaying = localStorage.getItem('currentlyDisplaying');
-
-      localStorage.setItem('currentlyDisplaying', 'record');
-      if (!running) {
-        $('#resultsText').val('');   // clear hypotheses from previous runs
-        console.log('Not running, handleMicrophone()');
-        handleMicrophone(token, currentModel, mic, function(err) {
-          if (err) {
-            var msg = 'Error: ' + err.message;
-            console.log(msg);
-            running = false;
-            localStorage.setItem('currentlyDisplaying', 'false');
-          } else {
-            recordButton.css('background-color', '#d74108');
-            recordButton.find('img').attr('src', 'images/stop.svg');
-            console.log('starting mic');
-            mic.record();
-            running = true;
-          }
-        });
-      } else {
-        console.log('Stopping microphone, sending stop action message');
-        recordButton.removeAttr('style');
-        recordButton.find('img').attr('src', 'images/microphone.svg');
-        $.publish('hardsocketstop');
-        mic.stop();
-        running = false;
-        localStorage.setItem('currentlyDisplaying', 'false');
-      }
-    };
-  })());
+      $('#resultsText').val('');   // clear hypotheses from previous runs
+      handleMicrophone(token, currentModel, mic, function(err) {
+        if (err) {
+          var msg = 'Error: ' + err.message;
+        } else {
+          recordButton.css('background-color', '#d74108');
+          recordButton.find('img').attr('src', 'images/stop.svg');
+          console.log('starting mic');
+          mic.record();
+        }
+      });
+    }();
+  });
 };
