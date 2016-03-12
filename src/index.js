@@ -69,16 +69,13 @@ $(document).ready(function() {
   };
 
   synthesizeRequest(utteranceOptions, audio);
-  typeText(spokenText, spokenText2);
-  typeText(spokenText2);
+  typeText(spokenText);
 
+  audio.addEventListener("ended", function(){
+    $('#hold-span').css('display', 'initial')
+    // $('#recordButton').click(true);
+  });
 
-
-
-// START SPEECH TO TEXT
-// START SPEECH TO TEXT
-// START SPEECH TO TEXT
-// START SPEECH TO TEXT
 // START SPEECH TO TEXT
 
   var tokenGenerator = utils.createTokenGenerator();

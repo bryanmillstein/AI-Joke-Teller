@@ -28,9 +28,14 @@ exports.initRecordButton = function(ctx) {
 
   // Requires user to hold down before mic is activated.
   recordButton.mousedown(function() {
-      timeoutId = setTimeout(handleRecord, 1000);
+    var audio = $('.audio').get(0);
+    if (!audio.ended) {
+      return
+    } else {
+      timeoutId = setTimeout(handleRecord, 1000);      
+    }
   }).bind('mouseup mouseleave', function() {
-      clearTimeout(timeoutId);
+    clearTimeout(timeoutId);
   });
 
   // Callback to begin recording.

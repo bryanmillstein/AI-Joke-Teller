@@ -83,6 +83,7 @@ exports.handleMicrophone = function(token, model, mic, callback) {
         console.log('-> ' + text);
         console.log('msg.results')
 
+
         function synthesizeRequest(options, audio) {
           var sessionPermissions = JSON.parse(localStorage.getItem('sessionPermissions')) ? 0 : 1;
           var downloadURL = '/api/synthesize' +
