@@ -18,6 +18,8 @@
 
 var Microphone = require('./Microphone');
 var handleMicrophone = require('./handlemicrophone').handleMicrophone;
+var Voice = require('../Voice');
+var utils = require('./utils');
 
 exports.initRecordButton = function(ctx) {
 
@@ -32,7 +34,7 @@ exports.initRecordButton = function(ctx) {
     if (!audio.ended) {
       return
     } else {
-      timeoutId = setTimeout(handleRecord, 1000);      
+      timeoutId = setTimeout(handleRecord, 1000);
     }
   }).bind('mouseup mouseleave', function() {
     clearTimeout(timeoutId);
@@ -81,7 +83,15 @@ exports.initRecordButton = function(ctx) {
 
       $.publish('hardsocketstop');
       mic.stop();
+
+      var voice = new Voice(),
+        text = "Hi, " + mic.message + " <br> It's a pleasure to meet you.",
+        spokenText = "Hi, ^200 " + mic.message + ". ^500 It's ^50 a ^50 pleasure ^50 to ^50 meet ^50 you."
+
+      voice.synthesizeRequest(text);
+      utils.typeText(spokenText);
+
       running = false
-    }, 2000)
+    }, 1000)
   });
 };

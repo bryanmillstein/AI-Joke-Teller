@@ -35,7 +35,6 @@ $(document).ready(function() {
   utils.typeText(spokenText);
 
 // START SPEECH TO TEXT
-
   var tokenGenerator = utils.createTokenGenerator();
 
   // Make call to API to try and get token

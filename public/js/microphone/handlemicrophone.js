@@ -83,48 +83,8 @@ exports.handleMicrophone = function(token, model, mic, callback) {
         console.log('-> ' + text);
         console.log('msg.results')
 
-
-        function synthesizeRequest(options, audio) {
-          var sessionPermissions = JSON.parse(localStorage.getItem('sessionPermissions')) ? 0 : 1;
-          var downloadURL = '/api/synthesize' +
-            '?voice=' + options.voice +
-            '&text=' + encodeURIComponent(options.text) +
-            '&X-WDC-PL-OPT-OUT=' +  sessionPermissions;
-
-
-          audio.pause();
-          try {
-            audio.currentTime = 0;
-          } catch(ex) {
-            // ignore. Firefox just freaks out here for no apparent reason.
-          }
-          audio.src = downloadURL;
-          audio.play();
-          return true;
-        }
-
-        function typeText(text) {
-            $(".spokenText").typed({
-              strings: [text],
-              showCursor: true,
-              startDelay: 750
-            });
-        }
-
-        var voice = 'en-US_AllisonVoice',
-          audio = $('.audio').get(0),
-          textArea = $('#textArea'),
-          text = "Hi, " + text + " <br> It's a pleasure to meet you.",
-          spokenText = "Hi, ^200 " + text + ". ^500 It's ^50 a ^50 pleasure ^50 to ^50 meet ^50 you."
-
-        var utteranceOptions = {
-          text: text,
-          voice: voice,
-          sessionPermissions: JSON.parse(localStorage.getItem('sessionPermissions')) ? 0 : 1
-        };
-
-        synthesizeRequest(utteranceOptions, audio);
-        typeText(spokenText);
+        // Store recorded text on microphone object so it can be used later.
+        mic.message = text;
       }
     }
   }

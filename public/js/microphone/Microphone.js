@@ -144,6 +144,7 @@ Microphone.prototype.record = function() {
  * Stop the audio recording
  */
 Microphone.prototype.stop = function() {
+  console.log(this)
   if (!this.recording)
     return;
   if(JSON.parse(localStorage.getItem('playback')))
