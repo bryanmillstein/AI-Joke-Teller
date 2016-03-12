@@ -26,22 +26,15 @@ exports.initRecordButton = function(ctx) {
       running = false,
       mic;
 
-  recordButton.mouseup(function () {
-    if (!running) {
-      return
-    }
-    recordButton.removeAttr('style');
-    recordButton.find('img').attr('src', 'images/microphone.svg');
-    setTimeout(function () {
-      console.log('Stopping microphone, sending stop action message');
-
-      $.publish('hardsocketstop');
-      mic.stop();
-      running = false
-    }, 2000)
+  // Requires user to hold down before mic is activated.
+  recordButton.mousedown(function() {
+      timeoutId = setTimeout(handleRecord, 1000);
+  }).bind('mouseup mouseleave', function() {
+      clearTimeout(timeoutId);
   });
 
-  recordButton.mousedown(function() {
+  // Callback to begin recording.
+  var handleRecord = function() {
     running = true;
     var token = ctx.token;
     var micOptions = {
@@ -60,10 +53,30 @@ exports.initRecordButton = function(ctx) {
         } else {
           recordButton.css('background-color', '#d74108');
           recordButton.find('img').attr('src', 'images/stop.svg');
+          $('#hold-span').css('display', 'none')
+          $('#speaking-span').css('display', 'initial')
           console.log('starting mic');
           mic.record();
         }
       });
     }();
+  };
+
+  // Handles the release of the mouse button. Triggers AI response.
+  recordButton.mouseup(function () {
+    if (!running) {
+      return
+    }
+    recordButton.removeAttr('style');
+    recordButton.find('img').attr('src', 'images/microphone.svg');
+    $('#hold-span').css('display', 'initial')
+    $('#speaking-span').css('display', 'none')
+    setTimeout(function () {
+      console.log('Stopping microphone, sending stop action message');
+
+      $.publish('hardsocketstop');
+      mic.stop();
+      running = false
+    }, 2000)
   });
 };

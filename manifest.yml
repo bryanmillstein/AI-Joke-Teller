@@ -14,7 +14,7 @@ applications:
   - text-to-speech-service
   - dialog-service
   - speech-to-text-service-standard
-  name: bryans-text-to-speech-demo
+  name: ai-jokes
   path: .
   memory: 768M
   env:
