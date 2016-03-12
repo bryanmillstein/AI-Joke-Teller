@@ -22,59 +22,17 @@ var utils = require('../public/js/microphone/utils.js');
 utils.initPubSub();
 var initViews = require('../public/js/microphone/views.js').initViews;
 var getModels = require('../public/js/microphone/models.js').getModels;
+var Voice = require('../public/js/Voice');
 
 window.BUFFERSIZE = 8192
 
 $(document).ready(function() {
-
-  function synthesizeRequest(options, audio) {
-    var sessionPermissions = JSON.parse(localStorage.getItem('sessionPermissions')) ? 0 : 1;
-    var downloadURL = '/api/synthesize' +
-      '?voice=' + options.voice +
-      '&text=' + encodeURIComponent(options.text) +
-      '&X-WDC-PL-OPT-OUT=' +  sessionPermissions;
-
-
-    audio.pause();
-    try {
-      audio.currentTime = 0;
-    } catch(ex) {
-      // ignore. Firefox just freaks out here for no apparent reason.
-    }
-    audio.src = downloadURL;
-    audio.play();
-    return true;
-  }
-
-  function typeText(text) {
-      $(".spokenText").typed({
-        strings: [text],
-        showCursor: true,
-        startDelay: 750,
-        backSpeed: -25
-      });
-  }
-
-  var voice = 'en-US_AllisonVoice',
-    audio = $('.audio').get(0),
-    textArea = $('#textArea'),
+  var voice = new Voice(),
     text = "Hi, my name is Allison. <br> What is your name?",
-    spokenText = "Hi, ^200 my ^200 name ^200 is ^200 Allison. ^200 What ^50 is ^50 your ^50 name?",
-    spokenText2 = "What up dude?"
+    spokenText = "Hi, ^200 my ^200 name ^200 is ^200 Allison. ^200 What ^50 is ^50 your ^50 name?";
 
-  var utteranceOptions = {
-    text: text,
-    voice: voice,
-    sessionPermissions: JSON.parse(localStorage.getItem('sessionPermissions')) ? 0 : 1
-  };
-
-  synthesizeRequest(utteranceOptions, audio);
-  typeText(spokenText);
-
-  audio.addEventListener("ended", function(){
-    $('#hold-span').css('display', 'initial')
-    // $('#recordButton').click(true);
-  });
+  voice.synthesizeRequest(text);
+  utils.typeText(spokenText);
 
 // START SPEECH TO TEXT
 

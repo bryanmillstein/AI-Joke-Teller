@@ -114,3 +114,12 @@ exports.initPubSub = function() {
   $.unsubscribe = o.off.bind(o);
   $.publish     = o.trigger.bind(o);
 };
+
+exports.typeText = function(text) {
+  $(".spokenText").typed({
+    strings: [text],
+    showCursor: true,
+    startDelay: 750,
+    backSpeed: -25
+  });
+};
