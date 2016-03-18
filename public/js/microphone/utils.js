@@ -116,6 +116,15 @@ exports.initPubSub = function() {
 };
 
 exports.typeText = function(text) {
+  var list = document.getElementById("textArea");
+  while (list.hasChildNodes()) {
+    list.removeChild(list.firstChild);
+  }
+
+  var span = document.createElement("SPAN");
+  span.className += 'spokenText'
+  list.appendChild(span);
+
   $(".spokenText").typed({
     strings: [text],
     showCursor: true,
