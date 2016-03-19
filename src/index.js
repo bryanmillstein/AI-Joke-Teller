@@ -25,6 +25,7 @@ var getModels = require('../public/js/microphone/models.js').getModels;
 var Voice = require('../public/js/Voice');
 
 window.BUFFERSIZE = 8192
+window.FLOW_POSITION = 0
 
 $(document).ready(function() {
   var voice = new Voice(),

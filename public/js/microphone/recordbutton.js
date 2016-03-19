@@ -20,7 +20,7 @@ var Microphone = require('./Microphone');
 var handleMicrophone = require('./handlemicrophone').handleMicrophone;
 var Voice = require('../Voice');
 var utils = require('./utils');
-// var flow = require('data/flow')
+var flow = require('./data/flow')
 
 exports.initRecordButton = function(ctx) {
 
@@ -88,10 +88,10 @@ exports.initRecordButton = function(ctx) {
       var voice = new Voice();
 
       if (mic.message) {
-        var text = FLOW_LIST[FLOW_POSITION][0],
-          spokenText = FLOW_LIST[FLOW_POSITION][1];
+        var text = flow.getText(mic.message.trim()),
+          spokenText = flow.getSpokenText(mic.message.trim());
 
-          FLOW_POSITION += 1;
+        window.FLOW_POSITION += 1;
       } else {
         var text = "I'm sorry. <br> Can you please repeat that?",
           spokenText = "I'm ^200 sorry. ^500 Can ^50 you ^50 please ^50 repeat that?";
