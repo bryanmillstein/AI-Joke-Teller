@@ -43,7 +43,6 @@ exports.initRecordButton = function(ctx) {
 
   // Callback to begin recording.
   var handleRecord = function() {
-    running = true;
     var token = ctx.token;
     var micOptions = {
       bufferSize: ctx.buffersize
@@ -64,7 +63,22 @@ exports.initRecordButton = function(ctx) {
           $('#hold-span').css('display', 'none')
           $('#speaking-span').css('display', 'initial')
           console.log('starting mic');
+
+          // Catching if too loud for microphone to record.
+          // try {
+          //   mic.record();
+          // } catch (e) {
+          //   var text = "I'm sorry. <br> It's too loud. <br> I cannot hear you.?",
+          //     spokenText = "I'm ^200 sorry. ^500 It's ^50 too ^50 loud. ^500 I ^50 cannot ^50 hear ^50 you?";
+          //   voice.synthesizeRequest(text);
+          //   utils.typeText(spokenText);
+          // }
+
           mic.record();
+          // This was oriiginally at beginning of function. Moved
+          // it down to only set as true if successful recording. This
+          // was to handle the too loud error. 
+          running = true;
         }
       });
     }();

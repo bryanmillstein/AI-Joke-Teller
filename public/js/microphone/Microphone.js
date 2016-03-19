@@ -73,6 +73,15 @@ Microphone.prototype.onMediaStream =  function(stream) {
   if (!this.audioContext)
     this.audioContext = new AudioCtx();
 
+  // Catching if too loud for microphone to record.
+  // console.log('this.audioContext')
+  // console.log(this.audioContext);
+  // console.log('this.audioContext')
+  //
+  // if (!this.audioContext) {
+  //   throw new Error('Too Loud');
+  // }
+
   var gain = this.audioContext.createGain();
   var audioInput = this.audioContext.createMediaStreamSource(stream);
 
