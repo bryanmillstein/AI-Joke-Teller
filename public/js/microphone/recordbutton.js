@@ -87,8 +87,8 @@ exports.initRecordButton = function(ctx) {
       var voice = new Voice();
 
       if (mic.message) {
-        var text = "Hi, " + mic.message + " <br> It's a pleasure to meet you.",
-          spokenText = "Hi, ^200 " + mic.message + ". ^500 It's ^50 a ^50 pleasure ^50 to ^50 meet ^50 you.";
+        var text = "Hi, " + mic.message.trim() + " <br> It's a pleasure to meet you.",
+          spokenText = "Hi, ^200 " + mic.message.trim() + ". ^500 It's ^50 a ^50 pleasure ^50 to ^50 meet ^50 you.";
       } else {
         var text = "I'm sorry. <br> Can you please repeat that?",
           spokenText = "I'm ^200 sorry. ^500 Can ^50 you ^50 please ^50 repeat that?";
